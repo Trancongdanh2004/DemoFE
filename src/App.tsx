@@ -23,7 +23,7 @@ export default function App() {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<HomePage />} />
-            <Route path="/folder/:folderId" element={<FolderDetailPage />} />
+            <Route path="/folder/:folderId" element={<HomePage />} />
             <Route path="/admin/login" element={<AdminLoginPage />} />
             <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
             <Route path="*" element={<Navigate to="/" replace />} />
