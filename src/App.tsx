@@ -10,7 +10,7 @@ const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       refetchOnWindowFocus: false,
-      staleTime: 1000 * 30, // 30s
+      staleTime: 1000 * 30, // Thời gian dữ liệu được xem là mới (30 giây)
       retry: 1,
     },
   },

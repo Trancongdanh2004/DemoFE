@@ -29,7 +29,7 @@ interface WindowsFolderTreeProps {
   onCollapseAll?: () => void;
 }
 
-// Single Year Item in the Tree
+// Thành phần hiển thị một mục Năm trong Cây thư mục
 const TreeYearItem: React.FC<{
   year: Year;
   isExpanded: boolean;
@@ -49,27 +49,27 @@ const TreeYearItem: React.FC<{
   onSelectYear,
   onSelectFolder,
 }) => {
-  // Fetch folders for this year
+  // Tải danh sách các thư mục thuộc năm này
   const { data: folders = [], isLoading: isLoadingFolders } = useQuery<FolderType[]>({
     queryKey: ['folders', year.id],
     queryFn: () => api.getYearFolders(year.id),
-    staleTime: 1000 * 60 * 5, // 5 min cache
+    staleTime: 1000 * 60 * 5, // Lưu bộ nhớ cache trong 5 phút
   });
 
-  // Filter folders if tree search is active
+  // Lọc danh sách thư mục nếu đang tìm kiếm trên cây thư mục
   const filteredFolders = useMemo(() => {
     if (!searchFilter.trim()) return folders;
     const q = searchFilter.toLowerCase();
     return folders.filter((f) => f.name.toLowerCase().includes(q));
   }, [folders, searchFilter]);
 
-  // If search filter matches folders in this year, auto-expand this year
+  // Nếu từ khóa tìm kiếm khớp với thư mục trong năm này thì tự động mở rộng nhánh năm đó
   const shouldForceExpand = searchFilter.trim() !== '' && filteredFolders.length > 0;
   const effectiveExpanded = isExpanded || shouldForceExpand;
 
   return (
     <div className="select-none">
-      {/* Year Node Header */}
+      {/* Tiêu đề nút Năm */}
       <div
         className={`group flex items-center justify-between px-2.5 py-2 rounded-xl text-sm transition-all duration-150 cursor-pointer ${
           isSelectedYear && !selectedFolderId
@@ -84,7 +84,7 @@ const TreeYearItem: React.FC<{
         }}
       >
         <div className="flex items-center space-x-1.5 min-w-0 flex-1">
-          {/* Chevron toggle button */}
+          {/* Nút mũi tên đóng/mở nhánh */}
           <button
             type="button"
             onClick={(e) => {
@@ -101,7 +101,7 @@ const TreeYearItem: React.FC<{
             )}
           </button>
 
-          {/* Windows-style folder icon for Year */}
+          {/* Biểu tượng thư mục kiểu Windows cho Năm */}
           <div className="flex-shrink-0 text-amber-500">
             {effectiveExpanded ? (
               <FolderOpen className="w-4 h-4 fill-amber-400 text-amber-500" />
@@ -110,13 +110,13 @@ const TreeYearItem: React.FC<{
             )}
           </div>
 
-          {/* Year Label */}
+          {/* Nhãn hiển thị Năm */}
           <span className="truncate text-xs sm:text-sm font-semibold tracking-tight">
             Năm {year.year}
           </span>
         </div>
 
-        {/* Folder Count Badge */}
+        {/* Huy hiệu số lượng thư mục */}
         <span
           className={`text-[11px] px-1.5 py-0.5 rounded-full font-medium flex-shrink-0 ml-2 ${
             isSelectedYear && !selectedFolderId
@@ -128,7 +128,7 @@ const TreeYearItem: React.FC<{
         </span>
       </div>
 
-      {/* Folders Dropdown (xổ dọc xuống giống Windows Explorer tree) */}
+      {/* Danh sách thư mục con (xổ dọc tương tự Windows Explorer tree) */}
       {effectiveExpanded && (
         <div className="relative ml-4 pl-3.5 my-1 border-l-2 border-slate-200 space-y-0.5">
           {isLoadingFolders ? (
@@ -157,7 +157,7 @@ const TreeYearItem: React.FC<{
                   }`}
                   title={folder.name}
                 >
-                  {/* Tree branch connector hint */}
+                  {/* Đường nối nhánh cây thư mục */}
                   <div
                     className={`absolute -left-3.5 top-1/2 -translate-y-1/2 w-2.5 h-[1.5px] ${
                       isSelected ? 'bg-indigo-600' : 'bg-slate-300'
@@ -165,7 +165,7 @@ const TreeYearItem: React.FC<{
                   />
 
                   <div className="flex items-center space-x-2 min-w-0 flex-1">
-                    {/* Yellow Windows-style Folder Icon */}
+                    {/* Biểu tượng thư mục con màu vàng kiểu Windows */}
                     <div className="flex-shrink-0">
                       {isSelected ? (
                         <FolderOpen className="w-4 h-4 fill-amber-300 text-amber-200" />
@@ -174,13 +174,13 @@ const TreeYearItem: React.FC<{
                       )}
                     </div>
 
-                    {/* Folder Name */}
+                    {/* Tên thư mục */}
                     <span className="truncate text-xs sm:text-[13px]">
                       {folder.name}
                     </span>
                   </div>
 
-                  {/* File Count Badge */}
+                  {/* Huy hiệu số lượng tệp */}
                   <span
                     className={`text-[10px] px-1.5 py-0.5 rounded-full font-medium ml-1.5 flex-shrink-0 ${
                       isSelected
@@ -216,7 +216,7 @@ export const WindowsFolderTree: React.FC<WindowsFolderTreeProps> = ({
 
   return (
     <div className="bg-white rounded-2xl border border-slate-200/80 shadow-sm flex flex-col h-full overflow-hidden">
-      {/* Tree Header */}
+      {/* Tiêu đề Cây thư mục */}
       <div className="p-3.5 sm:p-4 border-b border-slate-100 bg-slate-50/60 flex items-center justify-between">
         <div className="flex items-center space-x-2">
           <div className="w-8 h-8 rounded-xl bg-indigo-50 border border-indigo-200/60 flex items-center justify-center text-indigo-600 shadow-sm">
@@ -232,7 +232,7 @@ export const WindowsFolderTree: React.FC<WindowsFolderTreeProps> = ({
           </div>
         </div>
 
-        {/* Tree actions */}
+        {/* Các nút tác vụ trên cây thư mục */}
         <div className="flex items-center space-x-1">
           {onExpandAll && (
             <button
@@ -247,7 +247,7 @@ export const WindowsFolderTree: React.FC<WindowsFolderTreeProps> = ({
         </div>
       </div>
 
-      {/* Quick search input */}
+      {/* Ô tìm kiếm nhanh thư mục */}
       <div className="p-2.5 border-b border-slate-100">
         <div className="relative">
           <Search className="w-3.5 h-3.5 absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400" />
@@ -270,7 +270,7 @@ export const WindowsFolderTree: React.FC<WindowsFolderTreeProps> = ({
         </div>
       </div>
 
-      {/* Root Disk / System Item */}
+      {/* Mục gốc hệ thống / Kho lưu trữ */}
       <div className="p-2.5 border-b border-slate-100/80 bg-slate-50/30">
         <div className="flex items-center space-x-2 px-2 py-1.5 text-xs font-bold text-slate-500 uppercase tracking-wider">
           <HardDrive className="w-3.5 h-3.5 text-indigo-500" />
@@ -278,7 +278,7 @@ export const WindowsFolderTree: React.FC<WindowsFolderTreeProps> = ({
         </div>
       </div>
 
-      {/* Tree Content List */}
+      {/* Danh sách nội dung cây thư mục */}
       <div className="p-2.5 flex-1 overflow-y-auto space-y-1 max-h-[600px] min-h-[300px]">
         {isLoadingYears ? (
           <div className="p-4 space-y-3">
@@ -307,7 +307,7 @@ export const WindowsFolderTree: React.FC<WindowsFolderTreeProps> = ({
         )}
       </div>
 
-      {/* Footer Info */}
+      {/* Thông tin chân bảng cây thư mục */}
       <div className="p-2.5 border-t border-slate-100 bg-slate-50/50 text-[11px] text-slate-400 text-center">
         Nhấn vào Năm để xổ danh sách thư mục
       </div>

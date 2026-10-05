@@ -9,7 +9,7 @@ import {
 } from '../types';
 
 export const api = {
-  // Public
+  // Nhóm API công khai (Người dùng)
   getYears: async (): Promise<Year[]> => {
     const res = await apiClient.get<Year[]>('/years');
     return res.data;
@@ -60,7 +60,7 @@ export const api = {
     return `${baseUrl}/files/${fileId}/view`;
   },
 
-  // Admin Auth
+  // Nhóm API xác thực quản trị viên
   adminLogin: async (credentials: { username: string; password: string }) => {
     const res = await apiClient.post<{ token: string; admin: { username: string } }>(
       '/admin/login',
@@ -69,13 +69,13 @@ export const api = {
     return res.data;
   },
 
-  // Admin Stats
+  // Nhóm API thống kê hệ thống dành cho quản trị viên
   getDashboardStats: async (): Promise<DashboardStats> => {
     const res = await apiClient.get<DashboardStats>('/admin/stats');
     return res.data;
   },
 
-  // Admin Files
+  // Nhóm API quản lý tệp tin dành cho quản trị viên
   getAdminFiles: async (params: {
     page?: number;
     pageSize?: number;
@@ -107,7 +107,7 @@ export const api = {
     return res.data;
   },
 
-  // Admin Structure
+  // Nhóm API quản lý cây thư mục và năm dành cho quản trị viên
   createYear: async (year: number): Promise<Year> => {
     const res = await apiClient.post<Year>('/admin/years', { year });
     return res.data;

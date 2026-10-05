@@ -7,7 +7,7 @@ export const apiClient = axios.create({
   timeout: 30000,
 });
 
-// Request interceptor: add auth token
+// Bộ đón chặn yêu cầu (Request interceptor): đính kèm mã xác thực Bearer token
 apiClient.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('admin_token');
@@ -19,14 +19,14 @@ apiClient.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// Response interceptor: handle 401
+// Bộ đón chặn phản hồi (Response interceptor): xử lý lỗi 401 khi hết phiên đăng nhập
 apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401 && !error.config.url?.includes('/admin/login')) {
       localStorage.removeItem('admin_token');
       localStorage.removeItem('admin_user');
-      // If we are on an admin page, redirect to login
+      // Nếu đang ở trang quản trị, chuyển hướng người dùng về trang đăng nhập
       if (window.location.pathname.startsWith('/admin') && window.location.pathname !== '/admin/login') {
         window.location.href = '/admin/login';
       }

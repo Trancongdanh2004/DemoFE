@@ -59,15 +59,15 @@ export const FilePreviewModal: React.FC<FilePreviewModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 md:p-6 overflow-hidden animate-fade-in">
-      {/* Backdrop */}
+      {/* Lớp phủ mờ nền */}
       <div
         className="fixed inset-0 bg-slate-900/70 backdrop-blur-sm transition-opacity"
         onClick={onClose}
       />
 
-      {/* Modal Dialog */}
+      {/* Hộp thoại xem trước */}
       <div className="relative w-full max-w-5xl h-[92vh] flex flex-col bg-white rounded-3xl shadow-2xl border border-slate-200 z-10 overflow-hidden">
-        {/* Header */}
+        {/* Phần đầu hộp thoại */}
         <div className="flex items-center justify-between px-5 py-4 border-b border-slate-200/80 bg-slate-50/70">
           <div className="flex items-center space-x-3 min-w-0 mr-4">
             <div className="w-10 h-10 rounded-xl bg-white border border-slate-200 flex items-center justify-center flex-shrink-0 text-indigo-600 shadow-sm">
@@ -109,7 +109,7 @@ export const FilePreviewModal: React.FC<FilePreviewModalProps> = ({
             </div>
           </div>
 
-          {/* Action buttons */}
+          {/* Các nút tác vụ: Sao chép link, Mở tab mới, Tải về, Đóng */}
           <div className="flex items-center space-x-2 flex-shrink-0">
             <button
               onClick={handleCopyLink}
@@ -160,7 +160,7 @@ export const FilePreviewModal: React.FC<FilePreviewModalProps> = ({
           </div>
         </div>
 
-        {/* Viewer Toolbar for Office files */}
+        {/* Thanh công cụ chọn bộ đọc cho tệp Office */}
         {isOffice && hasRealCloudinaryUrl && (
           <div className="px-5 py-2 bg-slate-100/80 border-b border-slate-200 flex items-center justify-between text-xs">
             <span className="font-semibold text-slate-600">Chế độ xem trực tuyến:</span>
@@ -187,24 +187,24 @@ export const FilePreviewModal: React.FC<FilePreviewModalProps> = ({
           </div>
         )}
 
-        {/* Preview Content Body */}
+        {/* Khung nội dung hiển thị xem trước */}
         <div className="flex-1 bg-slate-100 p-2 sm:p-4 overflow-hidden relative flex flex-col justify-center items-center">
           {isPdf ? (
-            /* PDF Direct Preview iframe */
+            /* Khung iframe xem trực tiếp tệp PDF */
             <iframe
               src={viewUrl}
               title={file.original_name}
               className="w-full h-full rounded-2xl bg-white shadow-inner border border-slate-200"
             />
           ) : isOffice && hasRealCloudinaryUrl ? (
-            /* Office / Google Viewer iframe for public documents */
+            /* Khung iframe nhúng trình đọc Office / Google Viewer */
             <iframe
               src={viewerMode === 'google' ? googleViewerUrl : officeViewerUrl}
               title={file.original_name}
               className="w-full h-full rounded-2xl bg-white shadow-inner border border-slate-200"
             />
           ) : (
-            /* Info & Text View Card for Office documents or demo seed files */
+            /* Khung thông tin tài liệu Office hoặc tệp mẫu thử nghiệm */
             <div className="w-full max-w-2xl bg-white rounded-3xl p-8 shadow-md border border-slate-200/80 text-center space-y-6 animate-fade-in my-auto">
               <div className="w-20 h-20 rounded-3xl bg-indigo-50 border border-indigo-200 flex items-center justify-center mx-auto text-indigo-600 shadow-sm">
                 {file.file_type === 'excel' ? (

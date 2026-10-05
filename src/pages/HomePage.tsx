@@ -40,24 +40,24 @@ export const HomePage: React.FC = () => {
   const [selectedFolderId, setSelectedFolderId] = useState<string | null>(null);
   const [expandedYearIds, setExpandedYearIds] = useState<string[]>([]);
 
-  // Search & Filter state for files in selected folder
+  // Trạng thái tìm kiếm & lọc tệp trong thư mục được chọn
   const [searchTerm, setSearchTerm] = useState('');
   const [fileTypeFilter, setFileTypeFilter] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
 
-  // Modals
+  // Trạng thái hiển thị các hộp thoại modal
   const [isUploadOpen, setIsUploadOpen] = useState(false);
   const [previewFile, setPreviewFile] = useState<DocumentFile | null>(null);
 
-  // Fetch years
+  // Tải danh sách các năm
   const { data: years = [], isLoading: isLoadingYears } = useQuery<Year[]>({
     queryKey: ['years'],
     queryFn: api.getYears,
     staleTime: 1000 * 60 * 5,
   });
 
-  // Fetch folders for currently selected year
+  // Tải danh sách thư mục thuộc năm đang được chọn
   const {
     data: folders = [],
     isLoading: isLoadingFolders,
@@ -69,12 +69,12 @@ export const HomePage: React.FC = () => {
     staleTime: 1000 * 60 * 5,
   });
 
-  // Current year object
+  // Đối tượng năm hiện tại đang được chọn
   const currentYear = useMemo(() => {
     return years.find((y) => y.id === selectedYearId) || years[0];
   }, [years, selectedYearId]);
 
-  // Initial selection of year
+  // Khởi tạo năm mặc định ban đầu
   useEffect(() => {
     if (years.length > 0 && !selectedYearId) {
       const firstYear = years[0];
@@ -83,7 +83,7 @@ export const HomePage: React.FC = () => {
     }
   }, [years, selectedYearId]);
 
-  // Query folder detail ONLY if routeFolderId is present in URL (/folder/:folderId)
+  // Truy vấn thông tin chi tiết thư mục khi có routeFolderId trên URL (/folder/:folderId)
   const { data: folderDetailFromRoute } = useQuery<FolderType>({
     queryKey: ['folder-detail', routeFolderId],
     queryFn: () => api.getFolderDetail(routeFolderId!),
@@ -91,7 +91,7 @@ export const HomePage: React.FC = () => {
     staleTime: 1000 * 60 * 5,
   });
 
-  // When folder detail from route loads, sync its year
+  // Khi chi tiết thư mục từ đường dẫn được tải, đồng bộ mốc năm tương ứng
   useEffect(() => {
     if (folderDetailFromRoute?.year_id) {
       setSelectedYearId(folderDetailFromRoute.year_id);
@@ -101,17 +101,17 @@ export const HomePage: React.FC = () => {
     }
   }, [folderDetailFromRoute?.year_id]);
 
-  // Active folder ID (either from route or local state)
+  // ID thư mục đang kích hoạt (từ URL route hoặc state cục bộ)
   const activeFolderId = routeFolderId || selectedFolderId;
 
-  // Auto-select first folder when viewing root '/'
+  // Tự động chọn thư mục đầu tiên khi truy cập trang chủ '/'
   useEffect(() => {
     if (!routeFolderId && !selectedFolderId && folders.length > 0) {
       setSelectedFolderId(folders[0].id);
     }
   }, [routeFolderId, selectedFolderId, folders]);
 
-  // Selected folder object
+  // Đối tượng thư mục đang được chọn
   const selectedFolder = useMemo(() => {
     if (!activeFolderId) return null;
     if (folderDetailFromRoute && folderDetailFromRoute.id === activeFolderId) {
@@ -120,7 +120,7 @@ export const HomePage: React.FC = () => {
     return folders.find((f) => f.id === activeFolderId) || null;
   }, [activeFolderId, folderDetailFromRoute, folders]);
 
-  // Fetch files when a folder is selected
+  // Tải danh sách tệp tin khi một thư mục được chọn
   const {
     data: filesData,
     isLoading: isLoadingFiles,
@@ -135,7 +135,7 @@ export const HomePage: React.FC = () => {
     staleTime: 1000 * 30,
   });
 
-  // Client-side quick filter on current page files
+  // Bộ lọc nhanh phía client đối với các tệp trên trang hiện tại
   const filteredFiles = useMemo(() => {
     const files = filesData?.data || [];
     return files.filter((f) => {
@@ -151,7 +151,7 @@ export const HomePage: React.FC = () => {
     });
   }, [filesData, searchTerm, fileTypeFilter]);
 
-  // Fetch quick stats for public preview
+  // Tải số liệu thống kê nhanh hiển thị ở giao diện công khai
   const { data: stats, refetch: refetchStats } = useQuery({
     queryKey: ['public-stats'],
     queryFn: api.getDashboardStats,
@@ -161,7 +161,7 @@ export const HomePage: React.FC = () => {
   const totalDocuments = stats?.totalFiles || 0;
   const todayDocuments = stats?.filesToday || 0;
 
-  // Handlers for Tree selection
+  // Các hàm xử lý sự kiện khi tương tác với Cây thư mục
   const handleSelectYear = (year: Year) => {
     setSelectedYearId(year.id);
     setSelectedFolderId(null);
@@ -209,7 +209,7 @@ export const HomePage: React.FC = () => {
       <Navbar onOpenUpload={() => setIsUploadOpen(true)} />
 
       <main className="flex-1 max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-6 w-full space-y-6">
-        {/* Sleek Hero Banner */}
+        {/* Banner giới thiệu nổi bật (Hero Banner) */}
         <section className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-indigo-900 via-indigo-850 to-slate-900 text-white p-5 sm:p-7 shadow-lg shadow-indigo-950/20 border border-indigo-700/30">
           <div className="absolute top-0 right-0 -mt-10 -mr-10 w-80 h-80 bg-indigo-500/20 rounded-full blur-3xl pointer-events-none" />
           <div className="absolute bottom-0 left-1/3 -mb-10 w-72 h-72 bg-sky-500/15 rounded-full blur-3xl pointer-events-none" />
@@ -255,7 +255,7 @@ export const HomePage: React.FC = () => {
         </section>
 
         {/* ========================================================================= */}
-        {/* MAIN EXPLORER WORKSPACE: 3 PARTS LEFT (TREE) : 7 PARTS RIGHT (FILES) */}
+        {/* KHÔNG GIAN LÀM VIỆC: 3 PHẦN TRÁI (CÂY THƯ MỤC) : 7 PHẦN PHẢI (DANH SÁCH TỆP) */}
         {/* ========================================================================= */}
         <section className="grid grid-cols-1 lg:grid-cols-10 gap-6 items-start">
           {/* CỘT DỌC BÊN GÓC TRÁI (3 PHẦN): CÂY THƯ MỤC CÁC NĂM (WINDOWS FOLDER TREE) */}
@@ -275,7 +275,7 @@ export const HomePage: React.FC = () => {
 
           {/* BÊN TỆP HIỂN THỊ (7 PHẦN): NỘI DUNG TÀI LIỆU CỦA THƯ MỤC / NĂM ĐƯỢC CHỌN */}
           <section className="lg:col-span-7 w-full space-y-4">
-            {/* Windows Explorer Style Address Bar / Breadcrumb */}
+            {/* Thanh địa chỉ và điều hướng đường dẫn kiểu Windows Explorer */}
             <div className="flex items-center justify-between p-2.5 px-3.5 bg-white rounded-xl border border-slate-200/80 shadow-xs text-xs">
               <div className="flex items-center space-x-1.5 text-slate-500 overflow-x-auto scrollbar-none py-0.5">
                 <button
@@ -326,7 +326,7 @@ export const HomePage: React.FC = () => {
               </button>
             </div>
 
-            {/* Folder / Year Header Card */}
+            {/* Thẻ tiêu đề Thư mục / Năm đang chọn */}
             <div className="bg-white rounded-2xl border border-slate-200/80 p-5 sm:p-6 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div className="flex items-start space-x-3.5">
                 <div className="w-12 h-12 rounded-xl bg-gradient-to-tr from-amber-400 to-amber-500 text-white flex items-center justify-center shadow-md shadow-amber-500/20 flex-shrink-0">
@@ -377,10 +377,10 @@ export const HomePage: React.FC = () => {
               </div>
             </div>
 
-            {/* IF A FOLDER IS SELECTED: DISPLAY FILES TABLE & FILTERS */}
+            {/* KHI ĐÃ CHỌN THƯ MỤC: HIỂN THỊ BẢNG TỆP & THANH BỘ LỌC */}
             {selectedFolder ? (
               <div className="space-y-4">
-                {/* Search & Filter Bar */}
+                {/* Thanh tìm kiếm và bộ lọc định dạng */}
                 <div className="flex flex-col sm:flex-row items-center justify-between gap-3 p-3 bg-white rounded-xl border border-slate-200/80 shadow-xs">
                   <div className="relative w-full sm:w-80">
                     <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
@@ -421,13 +421,13 @@ export const HomePage: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Document Table (Files side - 7 parts) */}
+                {/* Bảng tài liệu (Khu vực danh sách tệp - 7 phần) */}
                 <DocumentTable
                   files={filteredFiles}
                   isLoading={isLoadingFiles}
                 />
 
-                {/* Pagination */}
+                {/* Phân trang danh sách tệp */}
                 {filesData && filesData.totalPages > 1 && (
                   <div className="bg-white rounded-xl border border-slate-200/80 shadow-xs p-2">
                     <Pagination
@@ -445,7 +445,7 @@ export const HomePage: React.FC = () => {
                 )}
               </div>
             ) : (
-              /* IF NO FOLDER IS SELECTED (YEAR OVERVIEW): SHOW FOLDER CARDS */
+              /* KHI CHƯA CHỌN THƯ MỤC (TỔNG QUAN NĂM): HIỂN THỊ CÁC THẺ THƯ MỤC */
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-bold text-slate-600 uppercase tracking-wider">
@@ -507,7 +507,7 @@ export const HomePage: React.FC = () => {
           </section>
         </section>
 
-        {/* Recent Uploads Stream */}
+        {/* Danh sách văn bản mới tải lên gần đây */}
         {stats?.recentUploads && stats.recentUploads.length > 0 && (
           <section className="space-y-3 pt-4 border-t border-slate-200/80">
             <div className="flex items-center space-x-2">
@@ -586,7 +586,7 @@ export const HomePage: React.FC = () => {
         )}
       </main>
 
-      {/* Global / Pre-selected Upload Modal */}
+      {/* Hộp thoại modal nộp tài liệu */}
       <UploadModal
         isOpen={isUploadOpen}
         onClose={() => setIsUploadOpen(false)}
@@ -599,7 +599,7 @@ export const HomePage: React.FC = () => {
         }}
       />
 
-      {/* File Preview Modal */}
+      {/* Hộp thoại modal xem trước tệp tài liệu */}
       <FilePreviewModal
         file={previewFile}
         isOpen={!!previewFile}

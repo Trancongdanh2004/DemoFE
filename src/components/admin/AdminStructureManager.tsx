@@ -27,7 +27,7 @@ export const AdminStructureManager: React.FC<AdminStructureManagerProps> = ({
   const [folders, setFolders] = useState<FolderType[]>([]);
   const [isLoadingFolders, setIsLoadingFolders] = useState(false);
 
-  // Modal states
+  // Quản lý trạng thái đóng/mở các hộp thoại modal
   const [isAddYearOpen, setIsAddYearOpen] = useState(false);
   const [isEditYearOpen, setIsEditYearOpen] = useState(false);
   const [yearToEdit, setYearToEdit] = useState<Year | null>(null);
@@ -37,13 +37,13 @@ export const AdminStructureManager: React.FC<AdminStructureManagerProps> = ({
   const [folderToEdit, setFolderToEdit] = useState<FolderType | null>(null);
   const [folderToDelete, setFolderToDelete] = useState<FolderType | null>(null);
 
-  // Form values
+  // Dữ liệu nhập từ các biểu mẫu
   const [yearInput, setYearInput] = useState<number>(new Date().getFullYear());
   const [folderNameInput, setFolderNameInput] = useState<string>('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
-  // Load folders when selectedYear changes
+  // Tải danh sách thư mục khi năm được chọn thay đổi
   React.useEffect(() => {
     if (selectedYear) {
       loadFolders(selectedYear.id);
@@ -64,7 +64,7 @@ export const AdminStructureManager: React.FC<AdminStructureManagerProps> = ({
     }
   };
 
-  // Year Actions
+  // Các thao tác quản lý Năm (Thêm, Sửa, Xóa)
   const handleCreateYear = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -113,7 +113,7 @@ export const AdminStructureManager: React.FC<AdminStructureManagerProps> = ({
     }
   };
 
-  // Folder Actions
+  // Các thao tác quản lý Thư mục (Thêm, Sửa, Xóa)
   const handleCreateFolder = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!selectedYear) return;
@@ -167,7 +167,7 @@ export const AdminStructureManager: React.FC<AdminStructureManagerProps> = ({
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-      {/* Left: Years Management (4 cols) */}
+      {/* Cột trái: Quản lý các năm (4 cột) */}
       <div className="lg:col-span-4 bg-white rounded-2xl border border-slate-200/80 p-5 shadow-sm space-y-4">
         <div className="flex items-center justify-between pb-3 border-b border-slate-100">
           <div className="flex items-center space-x-2">
@@ -245,7 +245,7 @@ export const AdminStructureManager: React.FC<AdminStructureManagerProps> = ({
         </div>
       </div>
 
-      {/* Right: Folders in selected year (8 cols) */}
+      {/* Cột phải: Các thư mục trong năm được chọn (8 cột) */}
       <div className="lg:col-span-8 bg-white rounded-2xl border border-slate-200/80 p-5 shadow-sm space-y-4">
         <div className="flex items-center justify-between pb-3 border-b border-slate-100">
           <div>
@@ -329,7 +329,7 @@ export const AdminStructureManager: React.FC<AdminStructureManagerProps> = ({
         )}
       </div>
 
-      {/* Modal: Add Year */}
+      {/* Hộp thoại modal: Thêm năm mới */}
       <Modal
         isOpen={isAddYearOpen}
         onClose={() => setIsAddYearOpen(false)}
@@ -372,7 +372,7 @@ export const AdminStructureManager: React.FC<AdminStructureManagerProps> = ({
         </form>
       </Modal>
 
-      {/* Modal: Edit Year */}
+      {/* Hộp thoại modal: Chỉnh sửa năm */}
       <Modal
         isOpen={isEditYearOpen}
         onClose={() => setIsEditYearOpen(false)}
@@ -414,7 +414,7 @@ export const AdminStructureManager: React.FC<AdminStructureManagerProps> = ({
         </form>
       </Modal>
 
-      {/* Modal: Delete Year */}
+      {/* Hộp thoại modal: Xác nhận xóa năm */}
       <Modal
         isOpen={!!yearToDelete}
         onClose={() => setYearToDelete(null)}
@@ -449,7 +449,7 @@ export const AdminStructureManager: React.FC<AdminStructureManagerProps> = ({
         </div>
       </Modal>
 
-      {/* Modal: Add Folder */}
+      {/* Hộp thoại modal: Thêm thư mục mới */}
       <Modal
         isOpen={isAddFolderOpen}
         onClose={() => setIsAddFolderOpen(false)}
@@ -490,7 +490,7 @@ export const AdminStructureManager: React.FC<AdminStructureManagerProps> = ({
         </form>
       </Modal>
 
-      {/* Modal: Edit Folder */}
+      {/* Hộp thoại modal: Đổi tên thư mục */}
       <Modal
         isOpen={!!folderToEdit}
         onClose={() => setFolderToEdit(null)}
@@ -530,7 +530,7 @@ export const AdminStructureManager: React.FC<AdminStructureManagerProps> = ({
         </form>
       </Modal>
 
-      {/* Modal: Delete Folder */}
+      {/* Hộp thoại modal: Xác nhận xóa thư mục */}
       <Modal
         isOpen={!!folderToDelete}
         onClose={() => setFolderToDelete(null)}

@@ -66,7 +66,7 @@ export const UploadModal: React.FC<UploadModalProps> = ({
     resolver: zodResolver(uploadFormSchema),
   });
 
-  // Sync selectedFolderId if initialFolderId changes
+  // Đồng bộ selectedFolderId khi initialFolderId thay đổi
   React.useEffect(() => {
     if (initialFolderId) {
       setSelectedFolderId(initialFolderId);
@@ -88,7 +88,7 @@ export const UploadModal: React.FC<UploadModalProps> = ({
     setErrorMessage(null);
     const newFiles: File[] = [];
     const validExtensions = ['.pdf', '.doc', '.docx', '.xls', '.xlsx'];
-    const maxSize = 10 * 1024 * 1024; // 10MB
+    const maxSize = 10 * 1024 * 1024; // Giới hạn 10MB
 
     for (let i = 0; i < incomingFiles.length; i++) {
       const file = incomingFiles[i];
@@ -104,7 +104,7 @@ export const UploadModal: React.FC<UploadModalProps> = ({
         continue;
       }
 
-      // Avoid duplicates by name + size
+      // Tránh trùng lặp tệp theo tên và kích thước
       const isDuplicate = stagedFiles.some(
         (f) => f.name === file.name && f.size === file.size
       );
@@ -213,7 +213,7 @@ export const UploadModal: React.FC<UploadModalProps> = ({
       maxWidth="xl"
     >
       {uploadResponse ? (
-        /* Success State */
+        /* Trạng thái tải lên thành công */
         <div className="space-y-5 py-2">
           <div className="flex flex-col items-center justify-center text-center p-6 bg-emerald-50 rounded-2xl border border-emerald-200">
             <div className="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mb-3">
@@ -227,7 +227,7 @@ export const UploadModal: React.FC<UploadModalProps> = ({
             </p>
           </div>
 
-          {/* Result details list */}
+          {/* Danh sách chi tiết kết quả tải lên */}
           <div className="max-h-48 overflow-y-auto space-y-2 divide-y divide-slate-100">
             {uploadResponse.results.map((res, i) => (
               <div key={i} className="flex items-center justify-between pt-2 text-xs">
@@ -257,7 +257,7 @@ export const UploadModal: React.FC<UploadModalProps> = ({
           </div>
         </div>
       ) : (
-        /* Upload Form */
+        /* Biểu mẫu nộp tài liệu */
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           {errorMessage && (
             <div className="p-3 bg-rose-50 border border-rose-200 rounded-xl flex items-center space-x-2 text-xs font-medium text-rose-700">
@@ -266,7 +266,7 @@ export const UploadModal: React.FC<UploadModalProps> = ({
             </div>
           )}
 
-          {/* Folder selector if not preset */}
+          {/* Bộ chọn thư mục nếu chưa được thiết lập sẵn */}
           {!initialFolderId && availableFolders.length > 0 && (
             <div>
               <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
@@ -289,7 +289,7 @@ export const UploadModal: React.FC<UploadModalProps> = ({
             </div>
           )}
 
-          {/* Uploader Details */}
+          {/* Thông tin người nộp tài liệu */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
             <div>
               <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">
@@ -323,7 +323,7 @@ export const UploadModal: React.FC<UploadModalProps> = ({
             </div>
           </div>
 
-          {/* Drag & Drop Zone */}
+          {/* Vùng kéo thả tệp tin */}
           <div>
             <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
               Chọn tệp tin tải lên <span className="text-rose-500">*</span>
@@ -360,7 +360,7 @@ export const UploadModal: React.FC<UploadModalProps> = ({
             </div>
           </div>
 
-          {/* Staged Files List */}
+          {/* Danh sách tệp đã chọn chuẩn bị tải lên */}
           {stagedFiles.length > 0 && (
             <div className="space-y-2">
               <div className="flex items-center justify-between text-xs font-semibold text-slate-500">
@@ -403,7 +403,7 @@ export const UploadModal: React.FC<UploadModalProps> = ({
             </div>
           )}
 
-          {/* Upload Progress Bar */}
+          {/* Thanh tiến trình tải tệp */}
           {isUploading && (
             <div className="space-y-1.5 pt-2">
               <div className="flex justify-between text-xs text-slate-600 font-medium">
@@ -419,7 +419,7 @@ export const UploadModal: React.FC<UploadModalProps> = ({
             </div>
           )}
 
-          {/* Submit Actions */}
+          {/* Các nút hành động biểu mẫu */}
           <div className="flex items-center justify-end space-x-3 pt-3 border-t border-slate-100">
             <button
               type="button"

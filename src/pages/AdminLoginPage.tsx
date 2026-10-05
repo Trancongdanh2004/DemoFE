@@ -12,7 +12,7 @@ export const AdminLoginPage: React.FC = () => {
   const { login, isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
-  // If already authenticated, redirect
+  // Nếu đã đăng nhập, tự động chuyển hướng tới trang quản trị
   React.useEffect(() => {
     if (isAuthenticated) {
       navigate('/admin/dashboard');
@@ -44,11 +44,11 @@ export const AdminLoginPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-slate-900 flex flex-col justify-center items-center p-4 relative overflow-hidden">
-      {/* Ambient background glows */}
+      {/* Hiệu ứng ánh sáng nền mờ */}
       <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-indigo-600/20 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-sky-600/15 rounded-full blur-3xl pointer-events-none" />
 
-      {/* Back to Home Link */}
+      {/* Liên kết quay về trang chủ */}
       <Link
         to="/"
         className="absolute top-6 left-6 inline-flex items-center text-xs font-semibold text-slate-400 hover:text-white transition-colors"
@@ -58,7 +58,7 @@ export const AdminLoginPage: React.FC = () => {
       </Link>
 
       <div className="relative w-full max-w-md bg-white/95 backdrop-blur-xl rounded-3xl p-8 shadow-2xl border border-white/20 animate-fade-in">
-        {/* Header */}
+        {/* Tiêu đề trang đăng nhập */}
         <div className="text-center space-y-2 mb-8">
           <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-indigo-600 to-sky-500 text-white flex items-center justify-center mx-auto shadow-lg shadow-indigo-500/25">
             <ShieldCheck className="w-8 h-8" />
@@ -71,7 +71,7 @@ export const AdminLoginPage: React.FC = () => {
           </p>
         </div>
 
-        {/* Demo Helper Callout */}
+        {/* Khối trợ giúp thông tin tài khoản mẫu */}
         <div className="mb-6 p-3.5 rounded-2xl bg-indigo-50/80 border border-indigo-200/80 flex items-center justify-between">
           <div className="flex items-center space-x-2 text-xs text-indigo-900">
             <KeyRound className="w-4 h-4 text-indigo-600 flex-shrink-0" />

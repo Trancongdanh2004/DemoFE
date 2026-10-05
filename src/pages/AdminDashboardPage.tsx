@@ -21,10 +21,10 @@ export const AdminDashboardPage: React.FC = () => {
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
-  // Active Tab: 'files' or 'structure'
+  // Tab đang hoạt động: 'files' (quản lý tệp) hoặc 'structure' (cấu trúc thư mục)
   const [activeTab, setActiveTab] = useState<'files' | 'structure'>('files');
 
-  // File Table Query State
+  // Trạng thái truy vấn dữ liệu cho bảng tệp tin
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [filters, setFilters] = useState({
@@ -38,14 +38,14 @@ export const AdminDashboardPage: React.FC = () => {
     sortDir: 'desc',
   });
 
-  // Protect route
+  // Bảo vệ tuyến đường: chuyển hướng về trang đăng nhập nếu chưa xác thực
   React.useEffect(() => {
     if (!isAuthenticated) {
       navigate('/admin/login');
     }
   }, [isAuthenticated, navigate]);
 
-  // Fetch Stats
+  // Tải thông tin thống kê tổng quan
   const {
     data: stats,
     isLoading: isLoadingStats,
@@ -56,7 +56,7 @@ export const AdminDashboardPage: React.FC = () => {
     enabled: isAuthenticated,
   });
 
-  // Fetch Years
+  // Tải danh sách các năm
   const {
     data: years = [],
     refetch: refetchYears,
@@ -66,7 +66,7 @@ export const AdminDashboardPage: React.FC = () => {
     enabled: isAuthenticated,
   });
 
-  // Fetch all Folders (flattened for filters)
+  // Tải tất cả các thư mục (gộp phẳng phục vụ bộ lọc tìm kiếm)
   const {
     data: allFolders = [],
     refetch: refetchAllFolders,
@@ -76,7 +76,7 @@ export const AdminDashboardPage: React.FC = () => {
       if (filters.yearId) {
         return api.getYearFolders(filters.yearId);
       }
-      // If no yearId selected, fetch for all years
+      // Nếu chưa chọn năm cụ thể, tải danh sách thư mục của tất cả các năm
       const promises = years.map((y) => api.getYearFolders(y.id));
       const res = await Promise.all(promises);
       return res.flat();
@@ -84,7 +84,7 @@ export const AdminDashboardPage: React.FC = () => {
     enabled: isAuthenticated && years.length > 0,
   });
 
-  // Fetch Admin Files with filters & pagination
+  // Tải danh sách tệp tin cho quản trị viên cùng với bộ lọc và phân trang
   const {
     data: filesData,
     isLoading: isLoadingFiles,
@@ -123,7 +123,7 @@ export const AdminDashboardPage: React.FC = () => {
       <Navbar />
 
       <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full space-y-8">
-        {/* Dashboard Top Header */}
+        {/* Tiêu đề phần đầu bảng điều khiển */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <div className="flex items-center space-x-2 text-indigo-600 font-bold text-xs uppercase tracking-wider">
@@ -146,14 +146,14 @@ export const AdminDashboardPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Stats Overview */}
+        {/* Khối thẻ tóm tắt số liệu thống kê */}
         <AdminStatsCards
           stats={stats || null}
           folderCount={totalFolderCount}
           isLoading={isLoadingStats}
         />
 
-        {/* Tab Controls */}
+        {/* Thanh điều hướng chuyển tab */}
         <div className="border-b border-slate-200 flex space-x-8 text-sm font-semibold">
           <button
             onClick={() => setActiveTab('files')}
@@ -186,7 +186,7 @@ export const AdminDashboardPage: React.FC = () => {
           </button>
         </div>
 
-        {/* Tab Contents */}
+        {/* Nội dung tab tương ứng */}
         {activeTab === 'files' ? (
           <AdminFileTable
             files={filesData?.data || []}

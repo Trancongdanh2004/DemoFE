@@ -28,14 +28,14 @@ export const FolderDetailPage: React.FC = () => {
   const [fileTypeFilter, setFileTypeFilter] = useState('');
   const [isUploadOpen, setIsUploadOpen] = useState(false);
 
-  // Fetch folder details
+  // Tải thông tin chi tiết của thư mục
   const { data: folder, isLoading: isLoadingFolder } = useQuery<FolderType>({
     queryKey: ['folder-detail', folderId],
     queryFn: () => api.getFolderDetail(folderId || ''),
     enabled: !!folderId,
   });
 
-  // Fetch files in folder
+  // Tải danh sách các tệp tin trong thư mục
   const {
     data: filesData,
     isLoading: isLoadingFiles,
@@ -46,7 +46,7 @@ export const FolderDetailPage: React.FC = () => {
     enabled: !!folderId,
   });
 
-  // Client-side quick filter on current page (if search term or file type)
+  // Bộ lọc nhanh phía máy khách trên trang hiện tại (theo từ khóa hoặc định dạng tệp)
   const allFiles = filesData?.data || [];
   const filteredFiles = allFiles.filter((f) => {
     if (fileTypeFilter && f.file_type !== fileTypeFilter) return false;
@@ -65,7 +65,7 @@ export const FolderDetailPage: React.FC = () => {
       <Navbar onOpenUpload={() => setIsUploadOpen(true)} />
 
       <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 w-full space-y-6">
-        {/* Breadcrumb Navigation */}
+        {/* Thanh điều hướng đường dẫn (Breadcrumb) */}
         <nav className="flex items-center space-x-2 text-xs font-medium text-slate-500">
           <Link to="/" className="flex items-center hover:text-indigo-600 transition-colors">
             <Home className="w-3.5 h-3.5 mr-1" />
@@ -79,7 +79,7 @@ export const FolderDetailPage: React.FC = () => {
           <span className="text-slate-900 font-semibold">{folder?.name || 'Đang tải...'}</span>
         </nav>
 
-        {/* Folder Header Card */}
+        {/* Thẻ tiêu đề thông tin thư mục */}
         <div className="relative overflow-hidden rounded-3xl bg-white border border-slate-200/80 p-6 sm:p-8 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-6">
           <div className="flex items-start space-x-4">
             <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-amber-400 to-amber-500 text-white flex items-center justify-center shadow-lg shadow-amber-500/20 flex-shrink-0">
@@ -111,7 +111,7 @@ export const FolderDetailPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Filter and Search Bar */}
+        {/* Thanh tìm kiếm và bộ lọc định dạng */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-3 p-4 bg-white rounded-2xl border border-slate-200/80 shadow-sm">
           <div className="relative w-full sm:w-80">
             <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
@@ -151,13 +151,13 @@ export const FolderDetailPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Files Table */}
+        {/* Bảng hiển thị danh sách tài liệu */}
         <DocumentTable
           files={filteredFiles}
           isLoading={isLoadingFiles || isLoadingFolder}
         />
 
-        {/* Pagination */}
+        {/* Phân trang tài liệu */}
         {filesData && (
           <div className="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-2">
             <Pagination
@@ -175,7 +175,7 @@ export const FolderDetailPage: React.FC = () => {
         )}
       </main>
 
-      {/* Upload Modal */}
+      {/* Hộp thoại modal nộp văn bản */}
       {folder && (
         <UploadModal
           isOpen={isUploadOpen}
